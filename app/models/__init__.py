@@ -1,12 +1,9 @@
 """
 models/__init__.py
 ------------------
-Importing all models here ensures Alembic's env.py (which imports Base)
-sees every table when running `alembic revision --autogenerate`.
-
 Import ORDER matters for FK resolution:
     Organization → User → Workspace → ResearchQuery
-    WatchlistItem depends on User + Organization (no dependency on Workspace)
+    WatchlistItem, ResearchReport depend on User + Organization
 """
 
 # Phase 1
@@ -18,14 +15,14 @@ from app.models.workspace import Workspace
 from app.models.research_query import ResearchQuery, QueryStatus
 from app.models.watchlist import WatchlistItem
 
+# Phase 3A
+from app.models.research_report import ResearchReport, ReportStatus
+
 __all__ = [
     # Phase 1
-    "Organization",
-    "User",
-    "UserRole",
+    "Organization", "User", "UserRole",
     # Phase 2
-    "Workspace",
-    "ResearchQuery",
-    "QueryStatus",
-    "WatchlistItem",
+    "Workspace", "ResearchQuery", "QueryStatus", "WatchlistItem",
+    # Phase 3A
+    "ResearchReport", "ReportStatus",
 ]

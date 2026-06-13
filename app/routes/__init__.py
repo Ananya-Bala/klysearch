@@ -5,6 +5,9 @@ from app.routes.research import router as research_router
 from app.routes.watchlist import router as watchlist_router
 from app.routes.admin import router as admin_router
 
+# Phase 3A
+from app.routes.analyze import router as analyze_router
+
 __all__ = [
     "auth_router",
     "organization_router",
@@ -12,4 +15,5 @@ __all__ = [
     "research_router",
     "watchlist_router",
     "admin_router",
+    "analyze_router",
 ]

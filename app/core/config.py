@@ -27,10 +27,22 @@ class Settings(BaseSettings):
     # ── CORS ─────────────────────────────────────────────────────────────
     ALLOWED_ORIGINS: list[str] = ["http://localhost:3000"]
 
+    # ── Phase 3A: AI Research Engine ─────────────────────────────────────
+    # Required for AI report generation. Set in .env.
+    GROQ_API_KEY: str | None = None
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
+
+    # Optional — enables news enrichment. Leave blank to skip gracefully.
+    NEWS_API_KEY: str = ""
+    NEWS_API_BASE_URL: str = "https://newsapi.org/v2"
+
+    # Max age of a cached report before re-analysis is triggered (minutes).
+    # Prevents duplicate OpenAI calls on rapid repeated requests.
+    REPORT_CACHE_MINUTES: int = 60
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        # Allow comma-separated strings to become lists in .env
         env_parse_none_str="None",
     )
 
@@ -38,8 +50,8 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     """
-    Cached settings instance — the lru_cache means this module is loaded
-    once per process, not once per request.
+    Cached settings instance — lru_cache means one load per process,
+    not one per request.
     """
     return Settings()
 
