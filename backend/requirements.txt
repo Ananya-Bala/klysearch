@@ -59,11 +59,11 @@ pandas>=2.2.0
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Persistent vector store for document chunks
-chromadb>=0.5.0
+chromadb
 
 # Free, local embedding model (sentence-transformers/all-MiniLM-L6-v2).
 # No API key required — runs on CPU.
-sentence-transformers>=3.0.0
+sentence-transformers
 
 # PDF ingestion support
 pypdf>=4.2.0
