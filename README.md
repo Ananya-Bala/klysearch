@@ -1,4 +1,4 @@
-# KlypSearch
+# KlySearch
 
 **AI-powered institutional research terminal**
 
