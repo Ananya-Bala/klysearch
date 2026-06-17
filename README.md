@@ -112,7 +112,7 @@ Run the backend:
 python -m uvicorn app.main:app --reload
 ```
 
-The API runs at `http://127.0.0.1:8000`, with interactive docs at `http://127.0.0.1:8000/docs`.
+The API runs at `https://klypsearch.onrender.com`, with interactive docs at `https://klypsearch.onrender.com/docs`.
 
 ### Frontend
 
