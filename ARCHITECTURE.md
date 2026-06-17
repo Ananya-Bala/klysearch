@@ -52,6 +52,7 @@ sequenceDiagram
     participant Frontend
     participant API
     participant RAG
+    participant External as External (YF/News)
     participant Groq
     participant DB
 
@@ -59,8 +60,9 @@ sequenceDiagram
     Frontend->>API: POST /research/analyze { ticker: "NVDA" }
     Note over API: Middleware: Validate JWT & Organization Context
     
-    parallel_fetch:
+    par Parallel Data Fetch
         API->>RAG: Retrieve Top-K chunks from ChromaDB
+    and
         API->>External: Fetch Yahoo Finance & News
     end
     
