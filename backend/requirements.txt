@@ -16,9 +16,11 @@ psycopg2-binary==2.9.10
 # ─────────────────────────────────────────────────────────────────────────────
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
-# bcrypt 4.x removed attributes passlib 1.7.4 expects (e.g. bcrypt.__about__),
-# and can break passlib's bcrypt backend checks. Pin to a compatible release.
-bcrypt==3.2.2
+# chromadb requires bcrypt>=4.0.1, so the old 3.2.2 pin can't be used.
+# passlib 1.7.4 works fine with bcrypt 4.x (it logs a harmless one-time
+# "reading bcrypt version" warning), but bcrypt 5.0.0 breaks passlib's backend
+# self-test (ValueError on >72-byte test hash). So pin to the latest 4.x.
+bcrypt==4.3.0
 python-multipart==0.0.12
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -59,11 +61,11 @@ pandas>=2.2.0
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Persistent vector store for document chunks
-chromadb>=0.5.0
+chromadb==0.5.23
 
 # Free, local embedding model (sentence-transformers/all-MiniLM-L6-v2).
 # No API key required — runs on CPU.
-sentence-transformers>=3.0.0
+sentence-transformers
 
 # PDF ingestion support
 pypdf>=4.2.0

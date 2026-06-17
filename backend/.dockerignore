@@ -1,0 +1,31 @@
+# Python caches / virtualenvs
+__pycache__/
+*.py[cod]
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets and local-only config — never bake these into the image
+.env
+.env.*
+
+# Local database + generated vector index (rebuilt at runtime from data/documents/)
+investment.db
+*.db
+data/chroma/
+data/chroma_db/
+
+# VCS / editor / OS noise
+.git/
+.gitignore
+.idea/
+.vscode/
+.DS_Store
+
+# Note: data/documents/ is intentionally NOT ignored — those markdown files are
+# the corpus the app ingests into ChromaDB on startup.
