@@ -129,26 +129,98 @@ The app runs at `http://localhost:5173`.
 
 ```
 klypsearch/
-├── backend/
-│   ├── alembic/
+├── .gitignore                 # Root ignores (venv, node_modules, .env, chroma caches)
+│
+├── backend/                   # Python API (FastAPI)
+│   ├── .env                   # Local secrets (not in git)
+│   ├── .gitignore
+│   ├── env.example            # Environment variable template
+│   ├── requirements.txt       # Python dependencies
+│   ├── investment.db          # SQLite DB (local, not in git)
+│   ├── alembic.ini
+│   │
+│   ├── alembic/               # DB migrations
 │   │   └── versions/
-│   ├── app/
+│   │       ├── 0002_phase2_tables.py
+│   │       └── 0003_phase3a_research_reports.py
+│   │
+│   ├── app/                   # Application code
+│   │   ├── main.py            # FastAPI entry point + router registration
+│   │   │
 │   │   ├── core/
+│   │   │   └── config.py      # Settings (env vars, API keys)
+│   │   │
 │   │   ├── database/
+│   │   │   └── session.py     # SQLAlchemy engine + session
+│   │   │
 │   │   ├── middleware/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── schemas/
-│   │   ├── services/
+│   │   │   └── dependencies.py # JWT auth dependencies
+│   │   │
+│   │   ├── models/            # SQLAlchemy ORM models
+│   │   │   ├── user.py
+│   │   │   ├── organization.py
+│   │   │   ├── workspace.py
+│   │   │   ├── research_query.py
+│   │   │   ├── research_report.py
+│   │   │   └── watchlist.py
+│   │   │
+│   │   ├── schemas/           # Pydantic request/response contracts
+│   │   │   ├── user.py        # Signup, Login, Token
+│   │   │   ├── chat.py        # ChatRequest, ChatResponse
+│   │   │   ├── research_report.py
+│   │   │   ├── document.py
+│   │   │   └── ...
+│   │   │
+│   │   ├── routes/            # HTTP layer (thin controllers)
+│   │   │   ├── auth.py        # POST /auth/signup, /auth/login, GET /auth/me
+│   │   │   ├── analyze.py     # POST /research/analyze
+│   │   │   ├── chat.py        # POST /chat/query
+│   │   │   ├── documents.py   # Document KB endpoints
+│   │   │   ├── research.py    # Phase 2 research queries
+│   │   │   ├── workspaces.py
+│   │   │   ├── watchlist.py
+│   │   │   ├── admin.py
+│   │   │   └── organization.py
+│   │   │
+│   │   ├── services/          # Business logic
+│   │   │   ├── auth_service.py
+│   │   │   ├── analysis_service.py    # Full research pipeline orchestrator
+│   │   │   ├── chat_service.py        # Multi-ticker chat assistant
+│   │   │   ├── market_data_service.py # Yahoo Finance (yfinance)
+│   │   │   ├── news_service.py
+│   │   │   ├── sentiment_service.py
+│   │   │   ├── ai_research_service.py # Groq report generation
+│   │   │   ├── document_service.py    # ChromaDB RAG
+│   │   │   ├── risk_service.py
+│   │   │   ├── scenario_service.py
+│   │   │   └── technical_analysis_service.py
+│   │   │
 │   │   └── utils/
+│   │       ├── jwt.py
+│   │       └── invite.py
+│   │
 │   └── data/
-│       ├── documents/
-│       └── chroma_db/
-└── frontend/
-    ├── public/
-    └── src/
-        ├── components/
-        └── assets/
+│       ├── documents/         # Earnings filings (ingested into ChromaDB)
+│       │   ├── nvidia_q1_fy2026_earnings.md
+│       │   ├── apple_q1_fy2025_earnings.md
+│       │   └── ...
+│       └── chroma_db/         # Local vector store (gitignored)
+│
+└── frontend/                  # React + Vite UI
+    ├── package.json
+    ├── vite.config.js
+    ├── index.html
+    │
+    ├── src/
+    │   ├── main.jsx           # React entry
+    │   ├── App.jsx            # Auth gate + routing (login/signup/terminal)
+    │   │
+    │   └── components/
+    │       ├── Login.jsx      # Operator authentication
+    │       ├── Signup.jsx     # Account registration
+    │       └── InvestmentTerminal.jsx  # Main research UI
+    │
+    └── dist/                  # Production build output
 ```
 
 **[`backend/app/services/`](backend/app/services/)** — where the actual work happens: market data, news, sentiment, risk, technical analysis, scenario modeling, document retrieval, and AI synthesis each get their own service.
