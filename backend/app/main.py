@@ -57,6 +57,7 @@ def create_app() -> FastAPI:
         "allow_credentials": True,
         "allow_methods": ["*"],
         "allow_headers": ["*"],
+        "allow_origins": ["*"],
     }
     if settings.APP_ENV == "development":
         # Vite may bind to 5173, 5174, etc. — allow any local dev origin.
